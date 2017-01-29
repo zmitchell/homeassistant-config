@@ -1,0 +1,124 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: !secret lat_home
+  longitude: !secret long_home
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: !secret elev_home
+  # metric for Metric, imperial for Imperial
+  unit_system: imperial
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: !secret tz_home
+  # Customizations
+  customize:
+    group.all_lights:
+      hidden: true
+    group.all_automations:
+      hidden: true
+
+frontend:
+http:
+  api_password: !secret http_password
+
+updater:
+discovery:
+conversation:
+history:
+logbook:
+
+# Track the sun
+sun:
+
+# Weather Prediction
+sensor:
+  - platform: darksky
+    api_key: !secret dark_sky_key
+    monitored_conditions:
+      - precip_probability
+      - precip_type
+      - temperature
+      - wind_speed
+      - temperature_max
+      - temperature_min
+
+# Text to speech
+tts:
+  platform: google
+
+# Media
+media_player:
+  - platform: plex
+
+# Lights
+light:
+  platform: hue
+  host: !secret hue_bridge_ip
+
+# Custom Panels
+panel_iframe:
+  router:
+    title: 'Router'
+    url: 'http://192.168.1.1'
+    icon: mdi:access-point-network
+
+# Groups
+group:
+  default_view:
+    view: yes
+    entities:
+      - group.all_automations
+      - group.weather
+      - group.dining_room
+      - group.living_room
+      - group.all_bulbs
+
+  weather:
+    name: "Weather"
+    entities:
+      - sensor.dark_sky_temperature
+      - sensor.dark_sky_wind_speed
+      - sensor.dark_sky_precip_probability
+      - sensor.dark_sky_precip_type
+
+  living_room:
+    name: "Living Room"
+    entities:
+      - light.living_room_light
+      - input_slider.living_room_brightness
+
+  dining_room:
+    name: "Dining Room"
+    entities:
+      - light.dining_room_light_1
+      - light.dining_room_light_2
+
+  all_bulbs:
+    name: "All Bulbs"
+    entities:
+      - light.living_room_light
+      - light.dining_room_light_1
+      - light.dining_room_light_2
+      - light.hall_light
+      - light.bedroom_light
+
+# Automations
+automation:
+  - alias: 'Porch light on after sunset'
+    hide_entity: true
+    trigger:
+      platform: state
+      entity_id: sun.sun
+      from: 'above_horizon'
+      to: 'below_horizon'
+    action:
+      - service: homeassistant.turn_on
+        entity_id: light.porch_light
+      - delay: 07:00:00 # keep the light on for 7 hours
+      - service: homeassistant.turn_off
+        entity_id: light.porch_light
+
+# Z-Wave
+zwave:
+  usb_path: /dev/zwave
+  config_path: /srv/hass/python-openzwave/openzwave/config

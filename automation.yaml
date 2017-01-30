@@ -1,0 +1,13 @@
+- alias: 'Porch light on after sunset'
+  hide_entity: true
+  trigger:
+    platform: state
+    entity_id: sun.sun
+    from: 'above_horizon'
+    to: 'below_horizon'
+  action:
+    - service: homeassistant.turn_on
+      entity_id: light.porch_light
+    - delay: 07:00:00 # keep the light on for 7 hours
+    - service: homeassistant.turn_off
+      entity_id: light.porch_light

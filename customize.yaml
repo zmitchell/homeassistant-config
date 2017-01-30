@@ -1,0 +1,4 @@
+group.all_lights:
+  hidden: true
+group.all_automations:
+  hidden: true

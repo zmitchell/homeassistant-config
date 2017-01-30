@@ -1,0 +1,9 @@
+- platform: darksky
+  api_key: !secret dark_sky_key
+  monitored_conditions:
+    - precip_probability
+    - precip_type
+    - temperature
+    - wind_speed
+    - temperature_max
+    - temperature_min

@@ -1,0 +1,37 @@
+default_view:
+  view: yes
+  entities:
+    - group.all_automations
+    - group.weather
+    - group.dining_room
+    - group.living_room
+    - group.all_bulbs
+
+weather:
+  name: "Weather"
+  entities:
+    - sensor.dark_sky_temperature
+    - sensor.dark_sky_wind_speed
+    - sensor.dark_sky_precip_probability
+    - sensor.dark_sky_precip_type
+
+living_room:
+  name: "Living Room"
+  entities:
+    - light.living_room_light
+    - input_slider.living_room_brightness
+
+dining_room:
+  name: "Dining Room"
+  entities:
+    - light.dining_room_light_1
+    - light.dining_room_light_2
+
+all_bulbs:
+  name: "All Bulbs"
+  entities:
+    - light.living_room_light
+    - light.dining_room_light_1
+    - light.dining_room_light_2
+    - light.hall_light
+    - light.bedroom_light

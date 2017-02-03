@@ -1,1 +1,11 @@
 secrets.yaml
+deps/
+tts/
+.HA_VERSION
+home-assistant.log
+home-assistant_v2.db
+OZW_Log.txt
+phue.conf
+plex.conf
+pyozw.sqlite
+.uuid
